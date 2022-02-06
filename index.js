@@ -211,4 +211,4 @@ async function scrapeResults(url) {
 }
 
 scrapeResults("https://sports.ndtv.com/cricket/results");
-// scrapeFixture("https://sports.ndtv.com/cricket/schedules-fixtures");
+scrapeFixture("https://sports.ndtv.com/cricket/schedules-fixtures");
