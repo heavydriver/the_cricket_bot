@@ -91,32 +91,34 @@ async function scrapeResults(url) {
   const numOfMatches = fixture.split("sp-scr_wrp").length - 1;
 
   async function screenshot(fixture) {
-    if (fixture?.match?.title.indexOf("Under-19") === -1) {
-      await page.goto(
-        `https://www.google.com/search?q=${fixture?.match?.title}`
-      );
-      await page.waitForSelector(
-        "#sports-app > div > div.imso-hov.imso-mh > div > div > div > div"
-      );
-      await page.click(
-        "#sports-app > div > div.imso-hov.imso-mh > div > div > div > div"
-      );
-      await page.waitForTimeout(5000);
-      const scoreBoard = await page.$(
-        "#liveresults-sports-immersive__match-fullpage > div > div > div.nGzje > div.imso-hide-loading.imso-mh > div > div > div > div > div.imso_mh__tm-scr.imso_mh__mh-bd"
-      );
-      await scoreBoard.screenshot({
-        path: `${fixture?.match?.title}_1.png`,
-        type: "png",
-      });
-      const summary = await page.$(
-        "#liveresults-sports-immersive__match-fullpage > div > div > div.nGzje > div:nth-child(3) > div"
-      );
-      await summary.screenshot({
-        path: `${fixture?.match?.title}_2.png`,
-        type: "png",
-      });
-    }
+    try {
+      if (fixture?.match?.title.indexOf("Under-19") === -1) {
+        await page.goto(
+          `https://www.google.com/search?q=${fixture?.match?.title}`
+        );
+        await page.waitForSelector(
+          "#sports-app > div > div.imso-hov.imso-mh > div > div > div > div"
+        );
+        await page.click(
+          "#sports-app > div > div.imso-hov.imso-mh > div > div > div > div"
+        );
+        await page.waitForTimeout(5000);
+        const scoreBoard = await page.$(
+          "#liveresults-sports-immersive__match-fullpage > div > div > div.nGzje > div.imso-hide-loading.imso-mh > div > div > div > div > div.imso_mh__tm-scr.imso_mh__mh-bd"
+        );
+        await scoreBoard.screenshot({
+          path: `${fixture?.match?.title}_1.png`,
+          type: "png",
+        });
+        const summary = await page.$(
+          "#liveresults-sports-immersive__match-fullpage > div > div > div.nGzje > div:nth-child(3) > div"
+        );
+        await summary.screenshot({
+          path: `${fixture?.match?.title}_2.png`,
+          type: "png",
+        });
+      }
+    } catch (error) {}
   }
 
   for (let i = 1; i <= numOfMatches; i++) {
@@ -151,7 +153,7 @@ async function scrapeResults(url) {
   });
 
   fixtures.map((fixture) => {
-    let message = `Match: ${fixture?.match?.title}\nResult: ${fixture?.match?.result}\n\n#cricket`;
+    let message = `Match: ${fixture?.match?.title}\nResult: ${fixture?.match?.result}\n\n`;
     let img1;
 
     try {
@@ -170,7 +172,7 @@ async function scrapeResults(url) {
             console.log(media);
 
             var status = {
-              status: message,
+              status: `${message}#cricket`,
               media_ids: media.media_id_string,
             };
 
@@ -189,7 +191,7 @@ async function scrapeResults(url) {
       delay(5000);
     } else {
       const params = {
-        status: message,
+        status: `${message}#cricket`,
       };
 
       client
@@ -206,5 +208,5 @@ async function scrapeResults(url) {
   await browser.close();
 }
 
-scrapeResults("https://sports.ndtv.com/cricket/results");
+// scrapeResults("https://sports.ndtv.com/cricket/results");
 scrapeFixture("https://sports.ndtv.com/cricket/schedules-fixtures");
