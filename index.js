@@ -208,5 +208,5 @@ async function scrapeResults(url) {
   await browser.close();
 }
 
-// scrapeResults("https://sports.ndtv.com/cricket/results");
+scrapeResults("https://sports.ndtv.com/cricket/results");
 scrapeFixture("https://sports.ndtv.com/cricket/schedules-fixtures");
